@@ -1,14 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "thegram-cloud",
-  "version": "4.7.3",
+  "version": "4.7.4",
   "description": "The AI knowledge base for enterprise AX: linked goals, decisions, requirements, evidence and sources that people and AI read as one record, answered with sources, every change kept as history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
   "author": {
     "name": "Roy Kim",
     "url": "https://thegram.one"
   },
   "homepage": "https://thegram.one",
-  "repository": "https://github.com/thegram-one/thegram-plugin",
+  "repository": "https://github.com/thegram-one/thegram-plugin-codex",
   "license": "Apache-2.0",
   "keywords": [
     "knowledge-base",
@@ -34,7 +34,7 @@
           "GramHub data next to your own knowledge"
         ],
         "websiteURL": "https://thegram.one",
-        "supportURL": "https://github.com/thegram-one/thegram-plugin/issues",
+        "supportURL": "https://github.com/thegram-one/thegram-plugin-codex/issues",
         "privacyPolicyURL": "https://vault.thegram.one/legal/privacy",
         "termsOfServiceURL": "https://vault.thegram.one/legal/terms",
         "defaultPrompt": [
@@ -109,7 +109,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.7.3: Removes the Claude Code command hook, the archived live test harnesses and the API-key setup commands from the package, so it declares no hook and ships no credential-handling scripts or instructions. The bundled thegram-cloud skill, plugin identity, MCP configuration and skill namespace are unchanged from 4.7.2.",
+        "release_notes": "4.7.4: The Codex and ChatGPT package now lives in its own repository, thegram-one/thegram-plugin-codex, and no longer carries the Claude Code manifest or its MCP file. The bundled thegram-cloud skill, plugin identity, MCP configuration and skill namespace are unchanged from 4.7.3.",
         "translations": {
           "ko-KR": {
             "subtitle": "AI가 근거로 쓰는 지식 베이스",

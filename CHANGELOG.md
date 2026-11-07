@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.7.4 — 2026-11-07
+
+- Split the plugin into three repositories, one per host: Claude stays in `thegram-one/thegram-plugin`, this repository carries Codex and ChatGPT, and `thegram-one/thegram-plugin-api` carries the API-key plugin. The Claude directory refused 4.7.3 for the packaging scripts and tests at the repository root (`LOCAL_CODE_FILE_TYPE`), so the Claude repository now holds only the Claude plugin files.
+- Remove `.claude-plugin/`, `.mcp.json` and `release/claude-README.md` from this repository, and drop `build-claude` and the Claude compatibility checks from `scripts/package_plugin.py`. The portable ZIP now holds `plugin.json`, `mcp.json`, `skills/`, `assets/`, `LICENSE` and `NOTICE` only; the release publishes `thegram-cloud.zip` and no Claude ZIP.
+- The Codex marketplace moves with the plugin: run `codex plugin marketplace remove thegram-cloud` and `codex plugin marketplace add thegram-one/thegram-plugin-codex`. The plugin identity, the MCP URL and the OAuth login do not change.
+- No change to the bundled skill, the `thegram-cloud` identity, the MCP configuration or the listing metadata apart from the repository and support links.
+
 ## 4.7.3 — 2026-11-06
 
 - Remove what the directory policy hold `MCP_FORWARDS_CREDENTIAL_ENV` ("Uses a credential from the user's machine", on 4.6.0 through 4.7.2) pointed at: `tests/e2e/` (the archived live harnesses read OAuth and bearer tokens from the environment and a local refresh-token store, and carried a local Chrome path and test mailbox) and the `THEGRAM_API_KEY` bearer-header commands in the README. API-key sign-in is documented at https://docs.thegram.one/guides/local-setup/; the plugin itself still signs in with OAuth only.

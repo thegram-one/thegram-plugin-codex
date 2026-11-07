@@ -21,10 +21,8 @@ jobs:
           test "$GITHUB_REF_NAME" = "v$version" || { echo "tag $GITHUB_REF_NAME does not match plugin.json $version" >&2; exit 1; }
           python3 scripts/package_plugin.py build --output "dist/thegram-cloud-$version.zip" --expected-version "$version"
           python3 scripts/package_plugin.py validate "dist/thegram-cloud-$version.zip" --expected-version "$version"
-          python3 scripts/package_plugin.py build-claude --output "dist/thegram-claude-$version.zip" --expected-version "$version"
           # Stable names make releases/latest/download/<name> always resolve to the newest release.
           cp "dist/thegram-cloud-$version.zip" dist/thegram-cloud.zip
-          cp "dist/thegram-claude-$version.zip" dist/thegram-claude.zip
           (cd dist && sha256sum *.zip > SHA256SUMS)
           python3 -c 'import json; print(json.load(open("plugin.json"))["extensions"]["com.openai"]["publication"]["release_notes"])' > dist/notes.md
           echo "VERSION=$version" >> "$GITHUB_ENV"
@@ -33,5 +31,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" --verify-tag --latest --title "Thegram Cloud $VERSION" --notes-file dist/notes.md \
-            dist/thegram-cloud.zip dist/thegram-claude.zip \
-            "dist/thegram-cloud-$VERSION.zip" "dist/thegram-claude-$VERSION.zip" dist/SHA256SUMS
+            dist/thegram-cloud.zip "dist/thegram-cloud-$VERSION.zip" dist/SHA256SUMS

@@ -26,9 +26,8 @@ import zipfile
 PLUGIN_NAME = "thegram-cloud"
 SKILL_ROOT = "skills/thegram-cloud"
 PRIVATE_MANIFEST = ".codex-plugin/plugin.json"
-PUBLIC_FILES = ("plugin.json", "mcp.json", ".mcp.json", "LICENSE", "NOTICE")
-PUBLIC_TREES = ("skills", "assets", ".claude-plugin")
-CLAUDE_README = "release/claude-README.md"
+PUBLIC_FILES = ("plugin.json", "mcp.json", "LICENSE", "NOTICE")
+PUBLIC_TREES = ("skills", "assets")
 VERSION_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$")
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]\n]*\]\(([^\s)]+)(?:\s+[^)]*)?\)")
 MAX_FILES = 10000
@@ -296,8 +295,7 @@ def validate_public(files: dict[str, bytes], expected_version: str | None = None
     for name in files:
         if name not in PUBLIC_FILES and not any(name.startswith(tree + "/") for tree in PUBLIC_TREES):
             raise PackageError(f"Not allowlisted for a public release: {name}")
-        if any(part.startswith(".") or part == "__pycache__" for part in name.split("/")
-               if part not in (".claude-plugin", ".mcp.json")):
+        if any(part.startswith(".") or part == "__pycache__" for part in name.split("/")):
             raise PackageError(f"Hidden/private file is forbidden in a public release: {name}")
         if name.endswith((".token", ".pyc", ".zip")):
             raise PackageError(f"Private/generated file is forbidden in a public release: {name}")
@@ -319,15 +317,6 @@ def validate_public(files: dict[str, bytes], expected_version: str | None = None
     server = public_server(files, "mcp.json")
     if server != {"type": "streamable-http", "url": "https://vault.thegram.one/mcp"}:
         raise PackageError("Portable Thegram endpoint/type changed or includes private settings")
-    if ".claude-plugin/plugin.json" in files:
-        compat = load_json(files, ".claude-plugin/plugin.json")
-        no_apps(compat, ".claude-plugin/plugin.json")
-        if compat.get("name") != PLUGIN_NAME or compat.get("version") != version:
-            raise PackageError("Claude compatibility identity/version differs from portable manifest")
-    if ".mcp.json" in files:
-        compat = public_server(files, ".mcp.json")
-        if compat != {"type": "http", "url": "https://vault.thegram.one/mcp"}:
-            raise PackageError("Claude compatibility endpoint/type changed or includes private settings")
     extensions = manifest.get("extensions", {})
     if not isinstance(extensions, dict) or not isinstance(extensions.get("com.openai", {}), dict):
         raise PackageError("Portable extensions must be objects")
@@ -407,26 +396,13 @@ def write_archive(files: dict[str, bytes], output: Path, source: Path | None = N
 def public_files(root: Path) -> dict[str, bytes]:
     files = {name: read_local_file(root / name) for name in PUBLIC_FILES if (root / name).exists()}
     for tree in PUBLIC_TREES:
-        if tree in ("skills", "assets") or (root / tree).exists():
-            files.update(local_tree(root, tree))
+        files.update(local_tree(root, tree))
     return files
 
 
 def build_public(root: Path, output: Path, expected_version: str | None = None) -> Path:
     files = public_files(root)
     validate_public(files, expected_version)
-    return write_archive(files, output)
-
-
-def build_claude(root: Path, output: Path, expected_version: str | None = None) -> Path:
-    """Build the account-upload ZIP for claude.ai from the same validated release tree."""
-    portable = public_files(root)
-    validate_public(portable, expected_version)
-    files = {name: data for name, data in portable.items()
-             if name in (".mcp.json", ".claude-plugin/plugin.json", "LICENSE", "NOTICE") or name.startswith(("skills/", "assets/"))}
-    files["README.md"] = read_local_file(root / CLAUDE_README)
-    check_file_tree(files)
-    validate_skill_files(files, ["skills"])
     return write_archive(files, output)
 
 
@@ -499,10 +475,6 @@ def main() -> int:
     build.add_argument("--root", type=Path, default=default_root)
     build.add_argument("--output", type=Path, required=True)
     build.add_argument("--expected-version")
-    claude = commands.add_parser("build-claude", help="Build the Claude account-upload ZIP")
-    claude.add_argument("--root", type=Path, default=default_root)
-    claude.add_argument("--output", type=Path, required=True)
-    claude.add_argument("--expected-version")
     validate = commands.add_parser("validate", help="Validate a portable release ZIP offline")
     validate.add_argument("archive", type=Path)
     validate.add_argument("--expected-version")
@@ -516,9 +488,6 @@ def main() -> int:
         if args.command == "build":
             verify_shared_skill(args.root)
             print(build_public(args.root, args.output, args.expected_version))
-        elif args.command == "build-claude":
-            verify_shared_skill(args.root)
-            print(build_claude(args.root, args.output, args.expected_version))
         elif args.command == "validate":
             version = validate_public(read_archive(args.archive), args.expected_version)
             print(f"Valid portable {PLUGIN_NAME} package {version}; bundled skill and references resolve")

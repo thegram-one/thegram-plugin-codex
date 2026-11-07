@@ -42,10 +42,6 @@ class PackagingTests(unittest.TestCase):
             "type": "streamable-http", "url": "https://vault.thegram.one/mcp",
         }}}))
         self.put("assets/logo.png", b"synthetic image")
-        self.put(".claude-plugin/plugin.json", package.json_bytes({"name": "thegram-cloud", "version": "1.5.0"}))
-        self.put(".mcp.json", package.json_bytes({"mcpServers": {"thegram": {
-            "type": "http", "url": "https://vault.thegram.one/mcp",
-        }}}))
         files = {"SKILL.md": (self.root / "skills/thegram-cloud/SKILL.md").read_bytes(),
                  "references/examples.md": (self.root / "skills/thegram-cloud/references/examples.md").read_bytes()}
         self.put("skill-source.lock.json", package.json_bytes({
@@ -265,7 +261,7 @@ class PackagingTests(unittest.TestCase):
         package.build_public(self.root, output, "1.5.0")
         files = package.read_archive(output)
         self.assertEqual(set(files), {
-            "plugin.json", "mcp.json", ".mcp.json", ".claude-plugin/plugin.json", "assets/logo.png",
+            "plugin.json", "mcp.json", "assets/logo.png",
             "skills/thegram-cloud/SKILL.md", "skills/thegram-cloud/references/examples.md",
         })
         self.assertEqual(package.validate_public(files, "1.5.0"), "1.5.0")
@@ -277,11 +273,7 @@ class PackagingTests(unittest.TestCase):
         package.build_public(self.root, second)
         self.assertEqual(first.read_bytes(), second.read_bytes())
 
-    def test_public_manifest_version_and_identity_mismatch_fail(self):
-        for compat in ({"name": "other", "version": "1.5.0"}, {"name": "thegram-cloud", "version": "1.4.0"}):
-            self.put(".claude-plugin/plugin.json", package.json_bytes(compat))
-            with self.subTest(compat=compat), self.assertRaises(package.PackageError):
-                package.build_public(self.root, self.directory / "bad.zip")
+    def test_public_manifest_expected_version_mismatch_fails(self):
         with self.assertRaises(package.PackageError):
             package.build_public(self.root, self.directory / "bad.zip", "1.6.0")
 
@@ -295,10 +287,6 @@ class PackagingTests(unittest.TestCase):
         manifest = deepcopy(self.manifest)
         manifest["extensions"]["com.openai"]["apps"] = "./private.app.json"
         self.put("plugin.json", package.json_bytes(manifest))
-        with self.assertRaises(package.PackageError):
-            package.build_public(self.root, self.directory / "bad.zip")
-        self.put("plugin.json", package.json_bytes(self.manifest))
-        self.put(".claude-plugin/plugin.json", package.json_bytes({"name": "thegram-cloud", "version": "1.5.0", "apps": []}))
         with self.assertRaises(package.PackageError):
             package.build_public(self.root, self.directory / "bad.zip")
 
