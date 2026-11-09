@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.5 — 2026-11-09
+
+- Skill: a move, delete or restore takes no `request_id` and refuses one; only a create and an edit carry it. The skill said every write has one, which a delete refused; after a lost reply it now reads the result before repeating a move or delete. The skill also comes from the new shared-skill release `thegram-cloud-4.7.5.zip` (`skill-source.lock.json`).
+- First public release since 4.7.2, so it also carries 4.7.3 and 4.7.4: no `hooks/`, no `tests/e2e/` or API-key commands in the README, and the Claude and API-key plugins moved to their own repositories (`thegram-one/thegram-plugin`, `thegram-one/thegram-plugin-api`).
+- No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata. The server side of this fix is in thegram-one/thegram-vault #397.
+
 ## 4.7.4 — 2026-11-07
 
 - Split the plugin into three repositories, one per host: Claude stays in `thegram-one/thegram-plugin`, this repository carries Codex and ChatGPT, and `thegram-one/thegram-plugin-api` carries the API-key plugin. The Claude directory refused 4.7.3 for the packaging scripts and tests at the repository root (`LOCAL_CODE_FILE_TYPE`), so the Claude repository now holds only the Claude plugin files.
