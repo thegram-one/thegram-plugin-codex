@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.8.1 — 2026-11-10
+
+- Skill: two rules changed, together with the server's instructions (the same SHA-256 on both sides, `e23a7f6d…8c83a69`). A count that comes back `unresolved` lists the words it did not read in `unread`: the skill asks again without them only when they add no condition, and otherwise says that condition cannot be counted. It used to send the agent to the catalog, which never fitted an answer. For a shared hub the skill gives the key words as `terms` in the language the hub is written in. The skill comes from the shared-skill release `thegram-cloud-4.8.1.zip` (`skill-source.lock.json`).
+- Needs the server release of 2026-11-10 (thegram-one/thegram-vault #419, #420), which is deployed: a hub finds records by the caller's key words, `vault_exact` lists every unread word at once, and its catalog fits one answer.
+- Checked on the deployed server with whole requests and real tool results: counts in the person's own vaults, small model 9 of 9 (2 of 4 before) and default model 6 of 6; two questions about Korean statutes asked in English, small model 6 of 6 (0 of 2 before) and default model 4 of 4. A count that names a hub's records by a word the server does not read ("vulnerabilities") still stops the small model in about two runs of three: it gives no number rather than a wrong one. No Codex or ChatGPT host has run it.
+- No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.8.0 — 2026-11-10
 
 - Skill: rewritten as one page of 3.8 KB; it was eighteen rules in 6.5 KB. Its rules are the text the Thegram server sends as its instructions, byte for byte (`thegram-skill` and `thegram-vault` pin the same SHA-256, `7e20df79…08df6`), so an assistant given the skill, the instructions or both reads one contract. The rules route a request to one tool, first match wins: remember with `vault_note` only when asked, in any language; a count with `vault_exact`; public data through `vault_ask {op:"hubs"}`; what can be read or what changed with `vault_ask`; a document with `vault_change` and `vault_add`; and anything else that may depend on what the person said with `vault_recall`, before asking the person for the missing detail. The skill no longer lists the record types, tells the agent to find a document before a note, or sends it to the guide. The skill comes from the shared-skill release `thegram-cloud-4.8.0.zip` (`skill-source.lock.json`).
