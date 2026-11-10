@@ -1,8 +1,8 @@
 # Thegram Cloud for Codex and ChatGPT
 
-Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Codex read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Codex or ChatGPT to find an earlier decision, list the open risks of a project, count records exactly, or save an explicitly authorized outcome as a typed record with its sources.
+Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Codex read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Codex or ChatGPT to find an earlier decision, list the open risks of a project, count records exactly, or remember what you tell it to keep.
 
-Version 4.8.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. The server lists seven tools: `vault_recall` and `vault_note`, which recall and remember and do nothing else, then `vault_ask` (questions; `op` `hubs`, `browse`, `changes` and `comments`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. The skill is one 3 KB file of seven rules: recall with `vault_recall` before acting, remember with `vault_note` only when asked, cite each fact by its `ref` and say what was not found, ask hubs through `vault_ask {op:"hubs"}`, count only with a complete `vault_exact`, write documents with the document tools, and keep the content in the answer when a write fails. How each tool is called is in the tool's own description and the server instructions; the plugin ships no hooks.
+Version 4.8.0 keeps the `thegram-cloud` plugin identity, the `thegram` MCP server key, and `https://vault.thegram.one/mcp`. The server lists seven tools: `vault_recall` and `vault_note`, which recall and remember and do nothing else, then `vault_ask` (questions; `op` `hubs`, `browse`, `changes` and `comments`), `vault_read`, `vault_add` (`op` `create`, `comment`, `restore`), `vault_change` (`op` `edit`, `move`, `delete`) and `vault_exact`. The skill is one 4 KB file. Its rules are the same text the server sends as its instructions, so the assistant reads one contract whether it is given the skill, the instructions or both: which tool a request goes to (remember, count, public data, structure, a document, or recall before asking the person), and what to tell the person. How each tool is called is in the tool's own description; the plugin ships no hooks.
 
 ## One plugin per host
 
@@ -43,7 +43,7 @@ The portable ZIP follows the Agent Plugins fixed-location layout: `plugin.json`,
 
 ## Storage and access
 
-Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact refs returned by `vault_ask`; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
+Cloud and separately connected Drive mounts are visible only when allowed by the current connection. Use the exact refs the tools return; reuse the established document instead of inventing a path, copying between mounts or redirecting a failed save. Local-only Mac folders are not visible to the cloud server.
 
 Each agent has its own access scope. Connecting Drive or owning another vault does not automatically expose it to that agent. Manage grants and disconnect agents in **Settings > Connected agents** at https://vault.thegram.one/settings/agents. A writable connection still requires user authorization before saving.
 
@@ -53,7 +53,7 @@ Each agent has its own access scope. Connecting Drive or owning another vault do
 
 Memory requests go to `https://vault.thegram.one/mcp`. Requests can contain search questions, selected document and record identifiers, and content and source references the user authorizes the assistant to save. The server returns the authorized vault or separately connected Drive data requested through that connection. OAuth sign-in follows the server's advertised authentication flow.
 
-The plugin itself does not fetch Slack, Gmail or unrelated connected-app data. Reading another source does not authorize copying it into Thegram. Retrieval and drafts stay read-only. Writes stay within the approved purpose and destination, with saved-state readback separate from retrieval-quality checks. Search ranking is not guaranteed; reported keyword fallbacks and semantic-index limitations must be disclosed.
+The plugin itself does not fetch Slack, Gmail or unrelated connected-app data. Reading another source does not authorize copying it into Thegram. Retrieval and drafts stay read-only. Writes stay within the approved purpose and destination. A save is reported with the ref and the sync state the server returned, and a queued write is not reported as saved. Search ranking is not guaranteed.
 
 No local MCP command, lifecycle hook or automatic package installation is declared. The Python and shell tools in `scripts/` and `tests/` are developer tools for building and checking the package, not code that the plugin starts on a user's machine.
 
