@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.8.2 — 2026-11-10
+
+- Skill: four sentences of the rules changed, together with the server's instructions (the same SHA-256 on both sides, `44fef823…2fbc04`), so that the rules ask a tool only for what its job needs and speak only of Thegram's tools. A host's connector check had reported the wording of 4.8.0 and 4.8.1 as asking for information beyond the stated operation. `vault_recall` is called for a question about what the person said, decided or prefers, and before the person is asked for a detail that a request leaves out, with the few words that name it; it was called for anything the assistant was about to do or answer, with the request as written. `vault_note` takes what the person asked to save, in their words. The first and last paragraphs name Thegram's tools only.
+- Needs the server release of 2026-11-10 (thegram-one/thegram-vault #421), which is deployed. The tool list is unchanged.
+- Checked with one step per request, the instructions and the tool list: default model 72 of 72; small model 54 of 54 with the skill and 212 of 216 with the instructions alone (108 of 108 with the 4.8.1 wording). Whole requests on the deployed server: a decision recalled and cited in one call by both models; an order with nothing remembered, small model 12 of 12 recalled, ordered nothing and asked. The host's own check was not rerun; a stand-in built from the published connector review rules reports over-collection for the 4.8.1 wording in 14 of 30 runs and for this one in 0 of 14.
+- No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.8.1 — 2026-11-10
 
 - Skill: two rules changed, together with the server's instructions (the same SHA-256 on both sides, `e23a7f6d…8c83a69`). A count that comes back `unresolved` lists the words it did not read in `unread`: the skill asks again without them only when they add no condition, and otherwise says that condition cannot be counted. It used to send the agent to the catalog, which never fitted an answer. For a shared hub the skill gives the key words as `terms` in the language the hub is written in. The skill comes from the shared-skill release `thegram-cloud-4.8.1.zip` (`skill-source.lock.json`).
