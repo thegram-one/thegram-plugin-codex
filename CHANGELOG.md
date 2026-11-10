@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.8.0 — 2026-11-10
+
+- Skill: rewritten as one page of 3.8 KB; it was eighteen rules in 6.5 KB. Its rules are the text the Thegram server sends as its instructions, byte for byte (`thegram-skill` and `thegram-vault` pin the same SHA-256, `7e20df79…08df6`), so an assistant given the skill, the instructions or both reads one contract. The rules route a request to one tool, first match wins: remember with `vault_note` only when asked, in any language; a count with `vault_exact`; public data through `vault_ask {op:"hubs"}`; what can be read or what changed with `vault_ask`; a document with `vault_change` and `vault_add`; and anything else that may depend on what the person said with `vault_recall`, before asking the person for the missing detail. The skill no longer lists the record types, tells the agent to find a document before a note, or sends it to the guide. The skill comes from the shared-skill release `thegram-cloud-4.8.0.zip` (`skill-source.lock.json`).
+- Checked with a model given exactly the server's instructions and tool list (`thegram-skill`, `evals/scenarios.json`, eighteen one-step scenarios): the small model chose the expected call in 107 of 108 runs and the default model in all 72, with the skill loaded or not. No real host has run it.
+- Publish after the server release that lists `vault_recall` and `vault_note`, drops the `guide` and `feedback` ops and sends these rules (thegram-one/thegram-vault #416, #417 and the unified-rules change). Before it the two tools are not listed, and the skill says to use the listed tools as their descriptions say.
+- Review materials (`plugin.json`, `review/`) no longer expect `vault_ask {op:"guide"}` and accept `vault_recall` where a scenario recalls.
+- No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.7.5 — 2026-11-09
 
 - Skill: a move, delete or restore takes no `request_id` and refuses one; only a create and an edit carry it. The skill said every write has one, which a delete refused; after a lost reply it now reads the result before repeating a move or delete. The skill also comes from the new shared-skill release `thegram-cloud-4.7.5.zip` (`skill-source.lock.json`).
