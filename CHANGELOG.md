@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.8.0 — 2026-11-10
+
+- Skill: rewritten as seven short rules, 3 KB instead of 6.5 KB and eighteen rules. It recalls with `vault_recall {query}` before acting and remembers with `vault_note {text}` when the person asks. The server files a note, so the skill no longer lists the record types, tells the agent to find a document first or sends it to the guide. Hubs, exact counts and document edits keep one rule each. A tool the skill names that the host does not list falls back to the listed tools and their descriptions. The skill comes from the shared-skill release `thegram-cloud-4.8.0.zip` (`skill-source.lock.json`).
+- Publish after the server release that lists `vault_recall` and `vault_note` and drops the `guide` and `feedback` ops (thegram-one/thegram-vault #416, #417). Before it the two tools are not listed, and the skill falls back to `vault_ask`, `vault_add` and `vault_change`.
+- Review materials (`plugin.json`, `review/`) no longer expect `vault_ask {op:"guide"}` and accept `vault_recall` where a scenario recalls.
+- No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.7.5 — 2026-11-09
 
 - Skill: a move, delete or restore takes no `request_id` and refuses one; only a create and an edit carry it. The skill said every write has one, which a delete refused; after a lost reply it now reads the result before repeating a move or delete. The skill also comes from the new shared-skill release `thegram-cloud-4.7.5.zip` (`skill-source.lock.json`).
