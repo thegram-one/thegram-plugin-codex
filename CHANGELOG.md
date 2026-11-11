@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.11.1 — 2026-11-11
+
+- Skill: one sentence added to Write (rules SHA-256 `2b92ec97…0e9de9e1e29`). `source` holds the id of a `source` record in the same document, never a name or URL; when the document has none for that origin, the agent adds one in the same write, and a URL stays in `ref`. A field test that put `"github-repository"` in `source` was refused with `E_MISSING_SOURCE`; with a `source` record added it saved.
+- The server's instructions take the same sentence in the next thegram-vault release; until then the two texts differ by this sentence. No change to the `thegram-cloud` identity, the MCP URL, OAuth configuration, assets or listing metadata.
+
 ## 4.11.0 — 2026-11-11
 
 - Skill: two sentences added to Write and the closing paragraph's approval sentence changed, together with the server's instructions (the same SHA-256 on both sides, `d76d34e7…21896c820`). Write saves each task, decision, risk, requirement and piece of evidence as a record with its `x` and links, never only as prose. A task or event the person asks to register is theirs, whoever registers it; a task the agent will do itself carries `owner` `agent:<name>`, and the agent's own steps and results go to `history` or `evidence` with a `ref`, never to `task` or `event`; what GitHub or another source holds is linked by `ref`, not copied. Approving, closing or completing rests on a status a person decided (`status_by` human or confirmed in a resume); a status an agent set waits under `decisions.claimed` or `check.claimed` until the person confirms it, and an edit over a person's value returns `W_OVERRIDES_HUMAN`.
