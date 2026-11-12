@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.13.0 — 2026-11-12
+
+- Skill: the rules were rewritten together with the server's instructions (the same SHA-256 on both sides, `5c44663c…c1f7aa`) and shortened from about 8,000 to about 3,400 characters, so a host that keeps the first 4,000 characters (OMP) no longer drops the Recall, queued-write and instruction_like rules.
+- The server now lists what each op needs in the op description, gives record fields that take one value `maxItems: 1`, accepts `limit`, `terms` and `cursor` beside a vault_ask question, answers a question sent to browse as a find, and names the argument to fix in every record error (`argument`, `missing`, `suggestion`, a same-class status `example`). The rules drop the argument detail the schemas now carry.
+- Rule fixes: `superseded` is a decision status, so other replaced records get a new record that `replaces` them; one URI per `ref`, further URIs as source records; a refused write may be fixed and resent with the same `request_id`.
+- Keep plugin identity, seven tools, MCP endpoint, OAuth settings, private App bindings and assets unchanged.
+- Needs the thegram-vault and thegram-format release of 2026-11-12 night (short instructions, op needs in the listing, argument paths in errors).
+
 ## 4.12.0 — 2026-11-12
 
 - Align the shared skill with natural-language Core plans and source-backed Context Packs; report unresolved clauses, unknown/untyped data and incomplete coverage.

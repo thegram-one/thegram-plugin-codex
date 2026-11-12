@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "thegram-cloud",
-  "version": "4.12.0",
+  "version": "4.13.0",
   "description": "The AI knowledge base for enterprise AX: linked goals, decisions, requirements, evidence and sources that people and AI read as one record, answered with sources, every change kept as history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
   "author": {
     "name": "Roy Kim",
@@ -127,7 +127,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "4.12.0: Natural-language searches use Core condition plans and source-backed Context Packs, with unresolved clauses and incomplete coverage kept visible. Authorized AI-authored decisions and risks retain their actor, time and source without requiring blanket human confirmation or granting execution permission. Tasks and calendar events require an advertised Inbox proposal capability and user registration; the current cloud tools expose neither, so the skill reports that limitation instead of creating work through document writes. The plugin identity, MCP endpoint, OAuth settings and skill namespace are unchanged. This release does not implement the Inbox registration UI/API.",
+        "release_notes": "4.13.0: The skill carries the same short rules the server now sends (about 3,400 characters, inside the 4,000 that hosts such as OMP keep), because the tool schemas and descriptions now give each op's arguments and every error names the argument to fix. A field such as t, d, x or ref holds one value (further URIs go in source records); a replaced decision gets x superseded and any other replaced record a new record that replaces it; a refused write may be fixed and resent with the same request_id. The plugin identity, seven tools, MCP endpoint, OAuth settings and skill namespace are unchanged.",
         "translations": {
           "ko-KR": {
             "subtitle": "AI가 근거로 쓰는 지식 베이스",

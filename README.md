@@ -2,7 +2,7 @@
 
 Thegram is the AI knowledge base for enterprise AX: it turns scattered documents and decisions into linked goals, decisions, requirements, evidence and sources that people, Thegram AI, ChatGPT and Codex read as one record. Every answer can end with the documents it rests on, and every change is kept as history. This plugin pairs the Thegram remote MCP connector with one skill: ask Codex or ChatGPT to find an earlier decision, list the open risks of a project, count records exactly, or remember what you tell it to keep.
 
-Version 4.12.0 keeps the `thegram-cloud` identity, the `thegram` MCP server key, seven tools and `https://vault.thegram.one/mcp`; OAuth settings and private App bindings are unchanged. The shared skill matches the server instructions: natural-language questions use Core conditions and Context Packs, with unresolved clauses and incomplete coverage reported explicitly. Authorized AI-authored Decision/Risk knowledge keeps its provenance without blanket human confirmation or an execution grant. Task/Event registration requires a listed Inbox proposal capability and the person's registration; the current cloud tools expose neither, so the assistant reports that limitation and does not create work through generic document writes. This is a guidance update, not an implementation of the Inbox UI/API.
+Version 4.13.0 keeps the `thegram-cloud` identity, the `thegram` MCP server key, seven tools and `https://vault.thegram.one/mcp`; OAuth settings and private App bindings are unchanged. The shared skill carries the server's short instructions (under 4,000 characters): the tool schemas and descriptions give each op's arguments, and an error names the argument to fix, so the assistant calls the tools right without long guidance. Authorized AI-authored Decision/Risk knowledge keeps its provenance without blanket human confirmation or an execution grant; Task/Event registration still needs a listed Inbox proposal capability and the person's registration.
 
 ## One plugin per host
 
@@ -64,12 +64,12 @@ No local MCP command, lifecycle hook or automatic package installation is declar
 
 ## Shared workflow provenance
 
-The skill is written in the shared skill source (`thegram-skill`, `skills/thegram-cloud/SKILL.md`) and enters this repository only through the validated public `thegram-cloud-4.12.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file. The Claude and API plugin repositories carry the same file byte for byte; after an import, copy `skills/thegram-cloud/SKILL.md` into both and compare it with the hash in the lock.
+The skill is written in the shared skill source (`thegram-skill`, `skills/thegram-cloud/SKILL.md`) and enters this repository only through the validated public `thegram-cloud-4.13.0.zip` release snapshot. `skill-source.lock.json` records that archive's SHA256, version, source path and the exact SHA256 of each imported file. The Claude and API plugin repositories carry the same file byte for byte; after an import, copy `skills/thegram-cloud/SKILL.md` into both and compare it with the hash in the lock.
 
 To import a later validated public release without changing the skill identity:
 
 ```sh
-python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.12.0.zip
+python3 -B scripts/sync_skill.py --source /path/to/thegram-cloud-4.13.0.zip
 ```
 
 The importer validates the archive before writing, replaces only its owned skill tree and updates the lock. Do not edit the generated skill independently. Set the release version in `plugin.json`, preserve the marketplace's local source route, and keep the remote MCP configuration and registered name unchanged.
