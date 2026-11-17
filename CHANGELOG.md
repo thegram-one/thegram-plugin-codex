@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.0.0 — 2026-11-17
+
+- The seven tools became four: `vault_query` (find, list, count, sum, avg, min, max, group, keys, state), `vault_read`, `vault_add` (op doc, records, note) and `vault_change` (op edit, move, delete). `vault_query` takes every condition in `where` and no natural language, and replaces `vault_recall`, `vault_exact` and the `vault_ask` ops ask, hubs, browse, changes and comments; shared reference data is read-only vaults that `vault_read` lists as `@mounts`. `vault_add` op note replaces `vault_note`.
+- Skill: rules rewritten with the server's instructions (the same SHA-256 on both sides, `dc1fccce…172b28a`). They keep the sentence that sends an assistant to the listed tools when a tool named in the rules is not listed.
+- Review scenarios, demo script and reviewer guide rewritten for the four tools: the vaults are listed with `vault_read {refs:["@mounts"]}`, a question is a `vault_query`, and the last seven days are a `vault_query` with `from.kind ["document"]` and `where updated gte` the date seven days before, followed by `vault_read` of the documents; a long result continues with its `next` cursor.
+- Keep plugin identity, MCP endpoint, OAuth settings, private App bindings and assets unchanged.
+- Needs the thegram-vault release of 2026-11-17 (four tools: vault_query, vault_read, vault_add, vault_change).
+
 ## 4.13.0 — 2026-11-12
 
 - Skill: the rules were rewritten together with the server's instructions (the same SHA-256 on both sides, `5c44663c…c1f7aa`) and shortened from about 8,000 to about 3,400 characters, so a host that keeps the first 4,000 characters (OMP) no longer drops the Recall, queued-write and instruction_like rules.
