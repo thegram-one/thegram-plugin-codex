@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0 — 2026-11-18
+
+- Use server-advertised authoring guides when available, without requiring them for notes or on older four-tool servers. Connector configuration and permissions are unchanged.
+
 ## 5.0.0 — 2026-11-17
 
 - The seven tools became four: `vault_query` (find, list, count, sum, avg, min, max, group, keys, state), `vault_read`, `vault_add` (op doc, records, note) and `vault_change` (op edit, move, delete). `vault_query` takes every condition in `where` and no natural language, and replaces `vault_recall`, `vault_exact` and the `vault_ask` ops ask, hubs, browse, changes and comments; shared reference data is read-only vaults that `vault_read` lists as `@mounts`. `vault_add` op note replaces `vault_note`.
