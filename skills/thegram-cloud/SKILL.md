@@ -10,7 +10,8 @@ Use the server instructions and the listed tool schemas, even if this skill is a
 | Intent | Route |
 |---|---|
 | Remember the person's words; create a named document or add records | `vault_add`; use the op the request calls for |
-| Find, count or check stored facts | `vault_query`; cite the refs and respect incomplete results |
+| Find, count or check stored facts; recover a missing preference before acting | `vault_query`; cite refs and respect incomplete results |
+| Look up a reference dataset (law, housing or other public data) | `vault_read` `@mounts` first to discover a shared read-only vault; query that scope |
 | Open a vault, section, record or its explicit relations | `vault_read` |
 | Revise an existing document | `vault_change` against the revision read |
 
