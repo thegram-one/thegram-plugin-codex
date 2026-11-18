@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "thegram-cloud",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "The AI knowledge base for enterprise AX: linked goals, decisions, requirements, evidence and sources that people and AI read as one record, answered with sources, every change kept as history. Use authorized Thegram Cloud vaults or separately connected Google Drive destinations.",
   "author": {
     "name": "Roy Kim",
@@ -127,7 +127,7 @@
         "demo_recording_url": "https://thegram.one/review/openai/"
       },
       "publication": {
-        "release_notes": "5.0.0: Seven tools became four: vault_query reads (find, list, count, sum, avg, min, max, group, keys, state) with every condition in `where` and no natural language; vault_read reads by ref, including `@mounts` for the vaults and read-only shared vaults; vault_add adds a document, records or a note; vault_change edits, moves or deletes. The skill carries the server's new rules. Needs the thegram-vault release of 2026-11-17. The plugin identity, MCP endpoint, OAuth settings and skill namespace are unchanged.",
+        "release_notes": "5.1.0: The shared skill is an optional index for the four MCP tools. Use @guide/types, @guide/body and @guide/edit only when the connected server advertises them. Earlier four-tool servers remain supported. No changes to plugin identity, endpoint, permissions or credentials.",
         "translations": {
           "ko-KR": {
             "subtitle": "AI가 근거로 쓰는 지식 베이스",
